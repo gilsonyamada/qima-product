@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: qima-product-db
+    environment:
+      POSTGRES_DB: qima
+      POSTGRES_USER: qima_user
+      POSTGRES_PASSSWORD: qima_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - qima-network
+  qima-product-api:
+    build:
+      context: ./product-api
+      dockerfile: Dockerfile
+    container_name: qima-product-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/qima
+      SPRING_DATASOURCE_USERNAME: qima_user
+      SPRING_DATASOURCE_PASSWORD: qima_pass
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - qima-network
+
+  qima-product-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: qima-product-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - qima-product-api
+    networks:
+      - qima-network
+
+volumes:
+  pgdata:
+
+networks:
+  qima-network:  
