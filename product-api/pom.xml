@@ -144,6 +144,10 @@
                 <configuration>
                     <excludes>
                         <exclude>**/Application.class</exclude>
+                        <exclude>**/dto/**</exclude>
+                        <exclude>**/dto/*.class</exclude>
+                        <exclude>**/exception/**</exclude>
+                        <exclude>**/exception/*.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

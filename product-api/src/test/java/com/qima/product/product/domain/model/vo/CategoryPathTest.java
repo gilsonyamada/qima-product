@@ -3,6 +3,7 @@ package com.qima.product.product.domain.model.vo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -49,6 +50,7 @@ class CategoryPathTest {
     private static Stream<Arguments> invalidCategoryListProvider() {
         return Stream.of(
             Arguments.of((Object) null),
+            Arguments.of(Collections.emptyList()),
             Arguments.of(List.of("")),
             Arguments.of(List.of("category", ""))
         );
