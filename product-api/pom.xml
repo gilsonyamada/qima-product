@@ -176,7 +176,6 @@
                 </executions>
                 <configuration>
                     <configLocation>${project.basedir}/code_quality/checkstyle.xml</configLocation>
-                    <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>
                 </configuration>
@@ -218,7 +217,6 @@
                 </reportSets>
                 <configuration>
                     <configLocation>${project.basedir}/code_quality/checkstyle.xml</configLocation>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -245,6 +243,11 @@
                         </reports>
                     </reportSet>
                 </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.6.0</version> <!-- Use latest stable version -->
             </plugin>
         </plugins>
     </reporting>
