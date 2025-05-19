@@ -1,4 +1,4 @@
-package com.qima.product.product.infrastructure.persistence;
+package com.qima.product.product.infrastructure.persistence.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class CategoryEntity {
@@ -29,6 +35,7 @@ public class CategoryEntity {
     private CategoryEntity parent;
 
     @OneToMany(mappedBy = "parent")
+    @Builder.Default
     private List<CategoryEntity> children = new ArrayList<>();
 
 }

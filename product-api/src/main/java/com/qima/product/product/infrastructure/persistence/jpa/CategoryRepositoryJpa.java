@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.qima.product.product.infrastructure.persistence.CategoryEntity;
+import com.qima.product.product.infrastructure.persistence.entity.CategoryEntity;
 
 public interface CategoryRepositoryJpa extends JpaRepository<CategoryEntity, Long> {
 

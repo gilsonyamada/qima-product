@@ -1,5 +1,7 @@
 package com.qima.product.product.domain.model;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.qima.product.product.domain.exception.InvalidCategoryException;
@@ -24,7 +26,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private Boolean available;
     private Category category;
     private CategoryPath categoryPath;

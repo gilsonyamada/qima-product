@@ -1,5 +1,6 @@
 package com.qima.product.product.application.command;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public record ProductPatchCommand(
@@ -7,6 +8,6 @@ public record ProductPatchCommand(
         Optional<String> description,
         Optional<Long> categoryId,
         Optional<Boolean> available,
-        Optional<Double> price) {
+        Optional<BigDecimal> price) {
 
 }
