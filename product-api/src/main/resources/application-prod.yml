@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://host:5432/qima
+    driver-class-name: org.postgresql.Driver
+    username: qima_user
+    password: qima_pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true

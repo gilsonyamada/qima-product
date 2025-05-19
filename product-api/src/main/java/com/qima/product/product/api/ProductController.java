@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class ProductController {
      * @return the created product response
      */
     @PostMapping
-    public ResponseEntity<ResponseWrapper<ProductResponse>> addProduct(ProductCreateRequest productRequest) {
+    public ResponseEntity<ResponseWrapper<ProductResponse>> addProduct(@RequestBody ProductCreateRequest productRequest) {
         ProductCommand product = productService.addProduct(productApiMapper.toCommand(productRequest));
         return ResponseEntity.created(URI.create(String.format(PRODUCT_API_V1_URI, product.id())))
             .body(new ResponseWrapper<ProductResponse> (productApiMapper.toResponse(product)));
@@ -50,7 +51,7 @@ public class ProductController {
      * @param productRequest the product request
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseWrapper<ProductResponse>> updateProduct(@PathVariable Long id, ProductUpdateRequest productRequest) {
+    public ResponseEntity<ResponseWrapper<ProductResponse>> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateRequest productRequest) {
         ProductCommand product = productService.updateProduct(id, productApiMapper.toCommand(productRequest));
         return ResponseEntity.ok(new ResponseWrapper<ProductResponse> (productApiMapper.toResponse(product)));
     }
@@ -62,7 +63,7 @@ public class ProductController {
      * @param productRequest the product request
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<ResponseWrapper<ProductResponse>> patchProduct(@PathVariable Long id, ProductPatchRequest productRequest) {
+    public ResponseEntity<ResponseWrapper<ProductResponse>> patchProduct(@PathVariable Long id, @RequestBody ProductPatchRequest productRequest) {
         ProductCommand product = productService.patchProduct(id, productApiMapper.toPatchCommand(productRequest));
         return ResponseEntity.ok(new ResponseWrapper<ProductResponse> (productApiMapper.toResponse(product)));
     }

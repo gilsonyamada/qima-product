@@ -41,16 +41,28 @@ public class ProductService {
 
     public ProductCommand patchProduct(Long id, ProductPatchCommand productCommand) {
         Product product = getProduct(id);
-        productCommand.available().ifPresent(product::setAvailable);
-        productCommand.name().ifPresent(product::setName);
-        productCommand.description().ifPresent(product::setDescription);
-        productCommand.price().ifPresent(product::setPrice);
-        productCommand.categoryId().ifPresent(categoryId -> {
-            Category category = getCategory(categoryId);
+        setUpdatedAttributes(productCommand, product);
+        return productRepository.save(product).map(productCommandMapper::toCommand).orElse(null);
+    }
+
+    private void setUpdatedAttributes(ProductPatchCommand productCommand, Product product) {
+        if (productCommand.available() != null) {
+            product.setAvailable(productCommand.available());
+        }
+        if (productCommand.price() != null) {
+            product.setPrice(productCommand.price());
+        }
+        if (productCommand.name() != null) {
+            product.setName(productCommand.name());
+        }
+        if (productCommand.description() != null) {
+            product.setDescription(productCommand.description());
+        }
+        if (productCommand.categoryId() != null) {
+            Category category = getCategory(productCommand.categoryId());
             product.setCategory(category);
             product.updateCategoryPath();
-        });
-        return productRepository.save(product).map(productCommandMapper::toCommand).orElse(null);
+        }
     }
 
     public void deleteProduct(Long id) {
