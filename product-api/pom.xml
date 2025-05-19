@@ -141,15 +141,65 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/Application.class</exclude>
-                        <exclude>**/dto/**</exclude>
-                        <exclude>**/dto/*.class</exclude>
-                        <exclude>**/exception/**</exclude>
-                        <exclude>**/exception/*.class</exclude>
-                    </excludes>
-                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/qima/product/Application.class</exclude>
+                                <exclude>com/qima/product/dto/**</exclude>
+                                <exclude>com/qima/product/exception/**</exclude>
+                                <exclude>com/qima/product/mapper/**</exclude>
+                                <exclude>com/qima/product/application/command/**</exclude>
+                                <exclude>com/qima/product/infrastructure/persistence/mapper/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <excludes>
+                                        <exclude>com.qima.product.Application</exclude>
+                                        <exclude>com.qima.product.dto.**</exclude>
+                                        <exclude>com.qima.product.exception.**</exclude>
+                                        <exclude>com.qima.product.mapper.**</exclude>
+                                        <exclude>com.qima.product.application.command.**</exclude>
+                                        <exclude>
+                                            com.qima.product.infrastructure.persistence.mapper.**</exclude>
+                                    </excludes>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.00</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Checkstyle Plugin -->
