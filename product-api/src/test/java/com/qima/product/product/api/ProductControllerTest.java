@@ -29,6 +29,9 @@ import com.qima.product.product.api.mapper.ProductApiMapper;
 import com.qima.product.product.application.command.ProductCommand;
 import com.qima.product.product.application.command.ProductPatchCommand;
 import com.qima.product.product.application.service.ProductService;
+import com.qima.product.product.domain.exception.CategoryNotFoundException;
+import com.qima.product.product.domain.exception.InvalidCategoryException;
+import com.qima.product.product.domain.exception.ProductNotFoundException;
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
@@ -120,4 +123,68 @@ class ProductControllerTest {
 
         verify(productService).deleteProduct(id);
     }
+
+    @Test
+    @DisplayName("should return 404 when category not found")
+    void shouldReturnNotFoundWhenCategoryNotFound() throws Exception {
+        ProductCreateRequest request = new ProductCreateRequest("name", "description", BigDecimal.TEN, 1L, true);
+        ProductCommand commandRequest = new ProductCommand(null, "Name", "descriptin", "cat > sub", 2L, true, BigDecimal.TEN);
+        
+
+        when(productApiMapper.toCommand(request)).thenReturn(commandRequest);
+        when(productService.addProduct(commandRequest)).thenThrow(new CategoryNotFoundException("category not found"));
+        
+
+        mockMvc.perform(post("/api/v1/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("should return 400 when invalid category")
+    void shouldReturnBadRequestWhenInvalidCategory() throws Exception {
+        ProductCreateRequest request = new ProductCreateRequest("name", "description", BigDecimal.TEN, 1L, true);
+        ProductCommand commandRequest = new ProductCommand(null, "Name", "descriptin", "cat > sub", 2L, true, BigDecimal.TEN);
+
+        when(productApiMapper.toCommand(request)).thenReturn(commandRequest);
+        when(productService.addProduct(commandRequest)).thenThrow(new InvalidCategoryException("Invalid category"));
+
+        mockMvc.perform(post("/api/v1/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("should return 500 when internal server error")
+    void shouldReturnInternalServerError() throws Exception {
+        ProductCreateRequest request = new ProductCreateRequest("name", "description", BigDecimal.TEN, 1L, true);
+        ProductCommand commandRequest = new ProductCommand(null, "Name", "descriptin", "cat > sub", 2L, true, BigDecimal.TEN);
+
+        when(productApiMapper.toCommand(request)).thenReturn(commandRequest);
+        when(productService.addProduct(commandRequest)).thenThrow(new RuntimeException("Internal server error"));
+
+        mockMvc.perform(post("/api/v1/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    @DisplayName("should return 404 when product not found")
+    void shouldReturnNotFoundWhenProductNotFound() throws Exception {
+        Long id = 1L;
+        ProductUpdateRequest request = new ProductUpdateRequest(1L, "Updated", "description", BigDecimal.TEN, 1L, true);
+        ProductCommand commandRequest = new ProductCommand(1L, "Updated", "descriptin", null, 1L, true, BigDecimal.TEN);
+
+        when(productApiMapper.toCommand(request)).thenReturn(commandRequest);
+        when(productService.updateProduct(id, commandRequest)).thenThrow(new ProductNotFoundException("Product not found"));
+
+        mockMvc.perform(put("/api/v1/products/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
+    
 }
