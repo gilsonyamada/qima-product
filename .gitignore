@@ -25,3 +25,6 @@ replay_pid*
 
 # target/
 target/
+
+# vs code settings
+.vscode/
