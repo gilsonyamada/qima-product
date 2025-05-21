@@ -1,5 +1,7 @@
 package com.qima.product.product.api;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -79,7 +81,7 @@ class ProductControllerIntegrationTest extends IntegrationTestBase {
     void shouldPatchProductSuccessfully() throws Exception {
         ProductPatchRequest request = new ProductPatchRequest("patched", null, null, null, null);
 
-        mockMvc.perform(put("/api/v1/products/1")
+        mockMvc.perform(patch("/api/v1/products/1")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -92,8 +94,8 @@ class ProductControllerIntegrationTest extends IntegrationTestBase {
     @Sql(scripts = "/sql/product/insert-products.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/sql/common/delete-all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void shouldDeleteProductSuccessfully() throws Exception {
-        mockMvc.perform(post("/api/v1/products/1"))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/v1/products/1"))
+                .andExpect(status().isOk());
     }
 
 }
