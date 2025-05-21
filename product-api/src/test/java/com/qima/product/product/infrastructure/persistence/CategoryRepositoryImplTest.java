@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,10 +42,9 @@ class CategoryRepositoryImplTest  {
                 .id(1L)
                 .name("Books")
                 .parent(null)
-                .children(Collections.emptyList())
                 .build();
 
-        entityCategory = CategoryEntity.builder().id(1L).name("Books").children(Collections.emptyList()).build();
+        entityCategory = CategoryEntity.builder().id(1L).name("Books").build();
     }
 
     @Test

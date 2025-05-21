@@ -16,7 +16,6 @@ public class Category {
     private Long id;
     private String name;
     private Category parent;
-    private List<Category> children;
 
     public List<String> buildPathSegments() {
         List<String> segments = new LinkedList<>();
